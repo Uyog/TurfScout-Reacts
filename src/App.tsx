@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SplashScreen from '../src/pages/Splash';
+import Auth from '../src/pages/Auth';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -72,6 +73,9 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
+              <Route exact path="/auth">
+                <Auth /> 
+              </Route>
               <Route exact path="/tab1">
                 <Tab1 />
               </Route>
