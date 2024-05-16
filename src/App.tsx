@@ -14,9 +14,11 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, home, search, settings, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import Splash from './pages/Splash';
+import AuthPage from './pages/Auth';
+import HomePage from './pages/Home';
+import SearchPage from './pages/Search';
+import SettingsPage from './pages/Settings';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -68,43 +70,17 @@ const App: React.FC = () => {
   return (
     <IonApp>
       {loading ? (
-         <SplashScreen onAnimationComplete={handleAnimationComplete} /> // Pass the onAnimationComplete prop // Render the splash screen while loading
+        <SplashScreen onAnimationComplete={handleAnimationComplete} /> // Pass the onAnimationComplete prop // Render the splash screen while loading
       ) : (
         <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/auth">
-                <Auth /> 
-              </Route>
-              <Route exact path="/tab1">
-                <Tab1 />
-              </Route>
-              <Route exact path="/tab2">
-                <Tab2 />
-              </Route>
-              <Route path="/tab3">
-                <Tab3 />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/tab1" />
-              </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="tab1" href="/tab1">
-                <IonIcon style={{ color: '#97FB57',}} aria-hidden="true" icon={home} />
-                <IonLabel style={{ color: '#97FB57',}}>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab2" href="/tab2">
-                <IonIcon style={{ color: '#97FB57',}} aria-hidden="true" icon={search} />
-                <IonLabel style={{ color: '#97FB57',}}>Search</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon style={{ color: '#97FB57',}} aria-hidden="true" icon={settings} />
-                <IonLabel style={{ color: '#97FB57',}}>Settings</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/auth" component={AuthPage} exact/>
+          <Route path="/home" component={HomePage} exact />
+          <Route path="/search" component={SearchPage} exact />
+          <Route path="/settings" component={SettingsPage} />
+          <Redirect exact from="/" to="/auth" />
+        </IonRouterOutlet>
+      </IonReactRouter>
       )}
     </IonApp>
   );

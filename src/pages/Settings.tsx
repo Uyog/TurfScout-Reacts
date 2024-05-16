@@ -1,24 +1,14 @@
 import React from 'react';
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonToggle,
-  IonList,
-} from '@ionic/react';
-import './Tab3.css';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonToggle, IonList, IonButtons, IonBackButton } from '@ionic/react';
 
-const Tab3: React.FC = () => {
+const Settings: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} /> {/* Use IonBackButton for navigation */}
+          </IonButtons>
           <IonTitle>Settings</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -45,4 +35,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default Settings;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonAvatar } from '@ionic/react';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonRow, IonCol } from '@ionic/react';
-
-import './Tab1.css';
+import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/react';
+import { add, people, person, search, settings } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
 
 interface ExampleCardProps {
   userData: {
@@ -13,8 +12,9 @@ interface ExampleCardProps {
   };
 }
 
-const Example: React.FC = () => {
+const HomePage: React.FC = () => {
   const [userName, setUserName] = useState<string>(""); // Declare userName state
+  const history = useHistory(); // Initialize useHistory
 
   useEffect(() => {
     // Set userName from arguments
@@ -54,10 +54,10 @@ const Example: React.FC = () => {
           <IonGrid>
             <IonRow>
               <IonCol>
-                <ExampleCard userData={{ id: 1, title: 'Arena One', subtitle: 'Galleria', content: 'Card Content 1' }} />
+                <MyCard userData={{ id: 1, title: 'Arena One', subtitle: 'Galleria', content: 'Card Content 1' }} />
               </IonCol>
               <IonCol>
-                <ExampleCard userData={{ id: 2, title: 'Freedom Heights', subtitle: 'Langata', content: 'Card Content 2' }} />
+                <MyCard userData={{ id: 2, title: 'Freedom Heights', subtitle: 'Langata', content: 'Card Content 2' }} />
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -88,13 +88,14 @@ const Example: React.FC = () => {
               </IonRow>
             </IonCardContent>
           </IonCard>
+          <FabButton history={history} /> {/* Pass history to FabButton */}
         </IonContent>
       </IonPage>
     </>
   );
 };
 
-const ExampleCard: React.FC<ExampleCardProps> = ({ userData }) => (
+const MyCard: React.FC<ExampleCardProps> = ({ userData }) => (
   <IonCard style={{ maxWidth: '300px', margin: '0 auto', backgroundColor: 'black' }}>
     <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
     <IonCardHeader>
@@ -108,4 +109,27 @@ const ExampleCard: React.FC<ExampleCardProps> = ({ userData }) => (
   </IonCard>
 );
 
-export default Example;
+interface FabButtonProps {
+  history: any; // Define history prop
+}
+
+const FabButton: React.FC<FabButtonProps> = ({ history }) => (
+  <IonFab vertical="bottom" horizontal="end" style={{ marginBottom: '20px', marginRight: '20px', position: 'fixed', zIndex: '9999' }}>
+    <IonFabButton>
+      <IonIcon icon={add}></IonIcon>
+    </IonFabButton>
+    <IonFabList side="start">
+      <IonFabButton onClick={() => history.push('/search')}> {/* Use history.push for navigation */}
+        <IonIcon icon={search}></IonIcon>
+      </IonFabButton>
+      <IonFabButton onClick={() => history.push('/profile')}> {/* Use history.push for navigation */}
+        <IonIcon icon={people}></IonIcon>
+      </IonFabButton>
+      <IonFabButton onClick={() => history.push('/settings')}> {/* Use history.push for navigation */}
+        <IonIcon icon={settings}></IonIcon>
+      </IonFabButton>
+    </IonFabList>
+  </IonFab>
+);
+
+export default HomePage;
