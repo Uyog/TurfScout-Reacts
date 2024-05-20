@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Dialog from '../components/Dialogue';
+import './Auth.css';
+import { IonInput, IonItem, IonLabel, IonButton } from '@ionic/react';
 
 // Define the type of props for the Login component
 interface LoginProps {
@@ -11,6 +14,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Function to handle login
   const handleLogin = async () => {
@@ -22,11 +26,10 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         },
         body: JSON.stringify({ email, password })
       });
-     
+
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store token
-        window.alert('Login successful'); // Pop-up dialogue
         window.location.href = '/home';
       } else {
         if (response.status === 401) {
@@ -34,31 +37,48 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         } else {
           setError('An unexpected error occurred');
         }
+        setIsDialogOpen(true);
       }
     } catch (error) {
       console.error('Login error:', error);
       setError('An unexpected error occurred');
+      setIsDialogOpen(true);
     }
   };
   return (
     <div className="container">
       <h1>Welcome to TurfScout</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
+      <IonItem>
+        <IonLabel position="floating">Email</IonLabel>
+        <IonInput
+          type="email"
+          value={email}
+          onIonChange={(e) => setEmail(e.detail.value!)}
+        />
+      </IonItem>
+      <IonItem>
+        <IonLabel position="floating">Password</IonLabel>
+        <IonInput
+          type="password"
+          value={password}
+          onIonChange={(e) => setPassword(e.detail.value!)}
+        />
+      </IonItem>
+      {error && <p>{error}</p>}
+      <IonButton onClick={handleLogin}>Login</IonButton>
       <p>Don't have an account? <span onClick={onSignUpClick}>Sign Up</span></p>
       <p><span onClick={() => console.log('Forgot password clicked')}>Forgot Password?</span></p>
-      {error && <p>{error}</p>}
+      
+
+
+      <Dialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Error"
+        content="Something went wrong!"
+        actionText="OK"
+        onAction={() => setIsDialogOpen(false)}
+      />
     </div>
   );
 };
@@ -77,6 +97,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signedUp, setSignedUp] = useState(false);
   const [error, setError] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Function to handle sign up
   const handleSignUp = async () => {
@@ -88,23 +109,24 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
         },
         body: JSON.stringify({ name, email, password, password_confirmation: confirmPassword })
       });
-     
+
       if (response.ok) {
         const data = await response.json();
         console.log('Sign up successful:', data);
         setSignedUp(true);
-        window.alert('Your account has been created successfully'); // Pop-up dialogue
-        onLoginClick(); 
+        onLoginClick();
       } else {
         if (response.status === 400) {
           setError('Validation failed');
         } else {
           setError('An unexpected error occurred');
         }
+        setIsDialogOpen(true);
       }
     } catch (error) {
       console.error('Sign up error:', error);
       setError('An unexpected error occurred');
+      setIsDialogOpen(true);
     }
   };
 
@@ -123,33 +145,51 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   return (
     <div className="container">
       <h1>Sign Up</h1>
-      <input
-        type="text"
-        placeholder="Username"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <button onClick={handleSignUp}>Sign Up</button>
-      <p>Already have an account? <span onClick={onLoginClick}>Login</span></p>
+      <IonItem>
+        <IonLabel position="floating">Username</IonLabel>
+        <IonInput
+          type="text"
+          value={name}
+          onIonChange={(e) => setName(e.detail.value!)}
+        />
+      </IonItem>
+      <IonItem>
+        <IonLabel position="floating">Email</IonLabel>
+        <IonInput
+          type="email"
+          value={email}
+          onIonChange={(e) => setEmail(e.detail.value!)}
+        />
+      </IonItem>
+      <IonItem>
+        <IonLabel position="floating">Password</IonLabel>
+        <IonInput
+          type="password"
+          value={password}
+          onIonChange={(e) => setPassword(e.detail.value!)}
+        />
+      </IonItem>
+      <IonItem>
+        <IonLabel position="floating">Confirm Password</IonLabel>
+        <IonInput
+          type="password"
+          value={confirmPassword}
+          onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+        />
+      </IonItem>
       {error && <p>{error}</p>}
+      <IonButton onClick={handleSignUp}>Sign Up</IonButton>
+      <p>Already have an account? <span onClick={onLoginClick}>Login</span></p>
+
+
+      <Dialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Error"
+        content="Something went wrong!"
+        actionText="OK"
+        onAction={() => setIsDialogOpen(false)}
+      />
     </div>
   );
 };
@@ -166,12 +206,14 @@ const LoginOrSignUp = () => {
 
   // JSX for LoginOrSignUp component
   return (
-    <div>
-      {showLogin ? (
-        <Login onSignUpClick={handleToggle} />
-      ) : (
-        <SignUp onLoginClick={handleToggle} />
-      )}
+    <div className="center-container">
+      <div className="login-signup-container">
+        {showLogin ? (
+          <Login onSignUpClick={handleToggle} />
+        ) : (
+          <SignUp onLoginClick={handleToggle} />
+        )}
+      </div>
     </div>
   );
 };

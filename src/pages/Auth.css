@@ -1,0 +1,15 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-signup-container {
+    text-align: center;
+  }
+
+  .field-space {
+    height: 16px; /* Adjust as needed */
+  }
+  
