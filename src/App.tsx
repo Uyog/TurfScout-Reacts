@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SplashScreen from '../src/pages/Splash';
-import Auth from '../src/pages/Auth';
+import Auth from './pages/Auth';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
