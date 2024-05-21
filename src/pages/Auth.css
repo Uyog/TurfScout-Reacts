@@ -5,11 +5,20 @@
     height: 100vh;
   }
   
+  
   .login-signup-container {
-    text-align: center;
+    text-align: 300px;
   }
 
   .field-space {
     height: 16px; /* Adjust as needed */
   }
+
+  .rounded-button {
+    border-radius: 20px !important;
+    display: block;
+    margin: 0 auto;
+  }
+
+  
   
