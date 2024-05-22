@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SplashScreen from '../src/pages/Splash';
 import Auth from './pages/Auth';
+import './components/Alert.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,

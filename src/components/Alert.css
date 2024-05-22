@@ -29,3 +29,17 @@
     margin-bottom: 20px;
   }
   
+  .custom-alert .alert-wrapper {
+    color: #97FB57; /* Set text color */
+  }
+  
+  .custom-alert .alert-message {
+    color: #97FB57; /* Set message text color */
+  }
+  
+  .custom-alert .alert-button {
+    color: #97FB57; /* Set button text color */
+  }
+
+ 
+  

@@ -36,6 +36,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false); 
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false); 
 
   const history = useHistory();
 
@@ -52,8 +53,8 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); // Store token
-        history.push('/home');
+        localStorage.setItem('token', data.token); 
+        setShowSuccessAlert(true); 
       } else {
         if (response.status === 401) {
           setError('Invalid email or password');
@@ -95,6 +96,8 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
     if (!emailError && !passwordError) {
       handleLogin();
+    } else {
+      setShowAlert(true);
     }
   };
 
@@ -109,7 +112,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
           type="email"
           value={email}
           onIonChange={(e) => setEmail(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -135,16 +138,38 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
       <p style={{ textAlign: 'center' }}>Don't have an account? <span onClick={onSignUpClick} style={{ ...textColorStyle, ...boldTextStyle }}>Sign Up</span></p>
       <p style={{ textAlign: 'center' }}><span onClick={() => console.log('Forgot password clicked')} style={textColorStyle}>Forgot Password?</span></p>
 
+
+
+    
       <Alert
-        isOpen={showAlert}
-        onClose={() => setShowAlert(false)}
-        title="Error"
-        content={error}
-        onSuccess={() => {
-          setShowAlert(false);
-          setError('');
+        isOpen={showSuccessAlert}
+        onClose={() => {
+          setShowSuccessAlert(false);
+          history.push('/home'); // Navigate to home page
         }}
+        title="Success" 
+        content="You have logged in successfully."
+        onSuccess={() => {
+          setShowSuccessAlert(false);
+          history.push('/home'); // Navigate to home page
+        }}
+       
       />
+      
+      <>
+
+    <Alert
+      isOpen={showAlert}
+      onClose={() => setShowAlert(false)}
+      title="Error"
+      content={error}
+      onSuccess={() => {
+        setShowAlert(false);
+        setError('');
+      }}
+     
+    />
+  </>
     </div>
   );
 };
@@ -278,17 +303,19 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
 
 
 
-      <Alert
-        isOpen={showAlert}
-        onClose={() => setShowAlert(false)}
-        title="Sign Up Status"
-        content={error ? error : "Sign up successful. Please log in."}
-        onSuccess={() => {
-          setShowAlert(false);
-          setError('');
-          history.push('/login'); // Navigate to login page
-        }}
-      />
+      <>
+    {/* Other JSX elements */}
+    <Alert
+      isOpen={showAlert}
+      onClose={() => setShowAlert(false)}
+      title="Error"
+      content={error}
+      onSuccess={() => {
+        setShowAlert(false);
+        setError('');
+      }}
+    />
+  </>
     </div>
   );
 };
