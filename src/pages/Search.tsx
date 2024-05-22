@@ -6,7 +6,7 @@ function Search() {
     <IonHeader>
       <IonToolbar color="black">
         <IonButtons slot="start">
-          <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} /> {/* Use IonBackButton for navigation */}
+          <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} /> 
         </IonButtons>
         <IonTitle style={{ color: '#97FB57' }}>Search</IonTitle>
       </IonToolbar>

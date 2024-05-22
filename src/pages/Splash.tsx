@@ -12,8 +12,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onAnimationComplete }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowAnimation(false);
-      onAnimationComplete(); // Trigger onAnimationComplete after animation duration
-    }, 2000); // Adjust the delay time for the fade-out effect
+      onAnimationComplete(); 
+    }, 2000); 
 
     return () => clearTimeout(timeout);
   }, []);
@@ -35,7 +35,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onAnimationComplete }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh', // Set height to full viewport height
+        height: '100vh', 
       }}
     >
       {showAnimation && (

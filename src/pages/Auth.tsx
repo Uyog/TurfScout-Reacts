@@ -5,7 +5,7 @@ import { IonInput, IonItem, IonIcon } from '@ionic/react';
 import { eyeOffOutline, eyeOutline, lockClosedOutline, mailOutline, personOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
-// Define the type of props for the Login component
+
 interface LoginProps {
   onSignUpClick: () => void;
 }
@@ -26,9 +26,8 @@ const iconColorStyle = {
   color: '#97FB57', 
 };
 
-// Login component
+
 const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
-  // Component state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -40,7 +39,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
   const history = useHistory();
 
-  // Function to handle login
+  
   const handleLogin = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/login', {
@@ -80,7 +79,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
     }
   };
 
-  // Function to handle password validation
+  
   const validatePassword = (value: string) => {
     if (!value) {
       setPasswordError('Password is required');
@@ -89,7 +88,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
     }
   };
 
-  // Function to handle form submission
+  
   const handleSubmit = () => {
     validateEmail(email);
     validatePassword(password);
@@ -120,16 +119,16 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
         <IonInput
           placeholder='Password'
-          type={showPassword ? 'text' : 'password'} // Toggle password visibility
+          type={showPassword ? 'text' : 'password'} 
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle} 
         />
         <IonIcon
-          icon={showPassword ? eyeOffOutline : eyeOutline} // Toggle eye icon
+          icon={showPassword ? eyeOffOutline : eyeOutline} 
           slot="end"
-          onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-          style={iconColorStyle} // Apply icon color style
+          onClick={() => setShowPassword(!showPassword)} 
+          style={iconColorStyle} 
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -145,13 +144,13 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         isOpen={showSuccessAlert}
         onClose={() => {
           setShowSuccessAlert(false);
-          history.push('/home'); // Navigate to home page
+          history.push('/home'); 
         }}
         title="Success" 
         content="You have logged in successfully."
         onSuccess={() => {
           setShowSuccessAlert(false);
-          history.push('/home'); // Navigate to home page
+          history.push('/home'); 
         }}
        
       />
@@ -174,27 +173,25 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
   );
 };
 
-// Define the type of props for the SignUp component
+
 interface SignUpProps {
   onLoginClick: () => void;
 }
 
-// SignUp component
 const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
-  // Component state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signedUp, setSignedUp] = useState(false);
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // New state for confirm password visibility
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const [showAlert, setShowAlert] = useState(false); 
 
   const history = useHistory();
 
-  // Function to handle sign up
+  
   const handleSignUp = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/register', {
@@ -227,10 +224,10 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   };
 
 
-  // JSX for SignUp component
+ 
   if (signedUp) {
     return (
-      <div className="container" style={textColorStyle}> {/* Apply text color style */}
+      <div className="container" style={textColorStyle}>
       <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up Successful</h1>
       <p style={{ textAlign: 'center' }}>Your account has been created successfully.</p>
       <p style={{ textAlign: 'center' }}>Please <span onClick={onLoginClick} style={{ ...textColorStyle, ...boldTextStyle }}>login</span> to continue.</p>
@@ -239,7 +236,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   }
 
   return (
-    <div className="container" style={textColorStyle}> {/* Apply text color style */}
+    <div className="container" style={textColorStyle}> 
        <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up</h1>
       <IonItem style={roundedTextField}>
         <IonIcon icon={personOutline} slot="start" style={iconColorStyle} />
@@ -248,7 +245,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type="text"
           value={name}
           onIonChange={(e) => setName(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle} 
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -259,7 +256,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type="email"
           value={email}
           onIonChange={(e) => setEmail(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle} 
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -267,16 +264,16 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
         <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
         <IonInput
           placeholder='Password'
-          type={showPassword ? 'text' : 'password'} // Toggle password visibility
+          type={showPassword ? 'text' : 'password'}
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle} 
         />
         <IonIcon
-          icon={showPassword ? eyeOffOutline : eyeOutline} // Toggle eye icon
+          icon={showPassword ? eyeOffOutline : eyeOutline} 
           slot="end"
-          onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-          style={iconColorStyle} // Apply icon color style
+          onClick={() => setShowPassword(!showPassword)} 
+          style={iconColorStyle} 
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -284,16 +281,16 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
         <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
         <IonInput
           placeholder='Confirm Password'
-          type={showConfirmPassword ? 'text' : 'password'} // Toggle confirm password visibility
+          type={showConfirmPassword ? 'text' : 'password'}
           value={confirmPassword}
           onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-          style={textColorStyle} // Apply text color style to text input
+          style={textColorStyle} 
         />
         <IonIcon
-          icon={showConfirmPassword ? eyeOffOutline : eyeOutline} // Toggle eye icon
+          icon={showConfirmPassword ? eyeOffOutline : eyeOutline} 
           slot="end"
-          onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Toggle confirm password visibility
-          style={iconColorStyle} // Apply icon color style
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+          style={iconColorStyle} 
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -304,7 +301,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
 
 
       <>
-    {/* Other JSX elements */}
+   
     <Alert
       isOpen={showAlert}
       onClose={() => setShowAlert(false)}
@@ -320,17 +317,17 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   );
 };
 
-// LoginOrSignUp component
+
 const LoginOrSignUp = () => {
-  // Component state
+  
   const [showLogin, setShowLogin] = useState(true);
 
-  // Function to toggle between login and sign up
+  
   const handleToggle = () => {
     setShowLogin(!showLogin);
   };
 
-  // JSX for LoginOrSignUp component
+  
   return (
     <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ width: '300px' }}>

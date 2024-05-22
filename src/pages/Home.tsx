@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/react';
+import {  IonFooter, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/react';
 import { add, people, person, search, settings } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
+import { useHistory } from 'react-router-dom';
+
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
 interface ExampleCardProps {
   userData: {
@@ -13,23 +20,60 @@ interface ExampleCardProps {
 }
 
 const HomePage: React.FC = () => {
-  const [userName, setUserName] = useState<string>(""); // Declare userName state
-  const history = useHistory(); // Initialize useHistory
+  const [userName, setUserName] = useState<string>(""); 
+  const [user, setUser] = useState<User | null>(null);
+  const history = useHistory();
 
   useEffect(() => {
-    // Set userName from arguments
-    setUserName("Username"); // Change this to retrieve username from your authentication state
-  }, []);
+    setUserName("Username"); 
+  },[]);
+
+  const handleLogout = async () => {
+    try {
+      console.log('Logging out...');
+  
+      const token = localStorage.getItem('token');
+  
+      const response = await fetch('http://127.0.0.1:8000/api/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        console.log('Logged out successfully');
+        localStorage.removeItem('token');
+        console.log('Token removed');
+        history.push('/auth');
+      } else {
+        console.error('Logout failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <>
       <IonMenu contentId="main-content">
         <IonHeader>
           <IonToolbar color="black">
-            <IonTitle style={{ color: '#97FB57',}}>Menu Content</IonTitle>
+            <IonTitle style={{ color: '#97FB57',}}>TurfScout</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">P R O FI I L E</IonContent>
+        <IonContent className="ion-padding">
+
+          
+        
+           </IonContent>
+        <IonFooter>
+          <IonToolbar>
+          <IonButton color="light" expand="full" onClick={handleLogout} style={{ backgroundColor: '#97FB57', color: 'black', fontWeight: 'bold', '--ion-color-light': '#97FB57', '--ion-color-light-contrast': 'black' }}>Logout</IonButton>
+          </IonToolbar>
+        </IonFooter>
       </IonMenu>
       <IonPage id="main-content">
         <IonHeader>
@@ -88,7 +132,7 @@ const HomePage: React.FC = () => {
               </IonRow>
             </IonCardContent>
           </IonCard>
-          <FabButton history={history} /> {/* Pass history to FabButton */}
+          <FabButton history={history} /> 
         </IonContent>
       </IonPage>
     </>
@@ -110,7 +154,7 @@ const MyCard: React.FC<ExampleCardProps> = ({ userData }) => (
 );
 
 interface FabButtonProps {
-  history: any; // Define history prop
+  history: any; 
 }
 
 const FabButton: React.FC<FabButtonProps> = ({ history }) => (
@@ -119,13 +163,13 @@ const FabButton: React.FC<FabButtonProps> = ({ history }) => (
       <IonIcon icon={add}></IonIcon>
     </IonFabButton>
     <IonFabList side="start">
-      <IonFabButton onClick={() => history.push('/search')}> {/* Use history.push for navigation */}
+      <IonFabButton onClick={() => history.push('/search')}> 
         <IonIcon icon={search}></IonIcon>
       </IonFabButton>
-      <IonFabButton onClick={() => history.push('/profile')}> {/* Use history.push for navigation */}
+      <IonFabButton onClick={() => history.push('/profile')}> 
         <IonIcon icon={people}></IonIcon>
       </IonFabButton>
-      <IonFabButton onClick={() => history.push('/settings')}> {/* Use history.push for navigation */}
+      <IonFabButton onClick={() => history.push('/settings')}> 
         <IonIcon icon={settings}></IonIcon>
       </IonFabButton>
     </IonFabList>

@@ -7,7 +7,7 @@ const Settings: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} /> {/* Use IonBackButton for navigation */}
+            <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} /> 
           </IonButtons>
           <IonTitle>Settings</IonTitle>
         </IonToolbar>

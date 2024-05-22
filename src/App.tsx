@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SplashScreen from '../src/pages/Splash';
 import Auth from './pages/Auth';
+import Home from './pages/Home';
 import './components/Alert.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
@@ -55,23 +56,33 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Simulate loading process
+    
     setTimeout(() => {
-      setLoading(false); // Set loading to false after 3 seconds (adjust as needed)
+      setLoading(false); 
     }, 3000);
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setAuthenticated(!!token); 
+  }, []);
+
+  const handleAuthentication = (isAuthenticated: boolean) => {
+    setAuthenticated(isAuthenticated);
+  };
+
   const handleAnimationComplete = () => {
-    // Handle animation complete event
+    
     console.log('Animation completed');
   };
 
   return (
     <IonApp>
       {loading ? (
-        <SplashScreen onAnimationComplete={handleAnimationComplete} /> // Pass the onAnimationComplete prop // Render the splash screen while loading
+        <SplashScreen onAnimationComplete={handleAnimationComplete} /> 
       ) : (
         <IonReactRouter>
         <IonRouterOutlet>

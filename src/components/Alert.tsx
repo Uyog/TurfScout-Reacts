@@ -22,11 +22,10 @@ const Alert: React.FC<AlertProps> = ({ isOpen, onClose, title, content, onSucces
           handler: onSuccess,
         },
       ]}
-      cssClass="custom-alert" // Combine multiple classes into a single attribute
-      backdropDismiss={false} // Prevent dismiss by clicking on backdrop
-      translucent // Make the alert translucent
-      // Apply color to title
-      style={{ '--ion-color-base': '#97FB57' }} // Apply color to title
+      cssClass="custom-alert" 
+      backdropDismiss={false} 
+      translucent 
+      style={{ '--ion-color-base': '#97FB57' }} 
     />
   );
 };
