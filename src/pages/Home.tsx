@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {  IonFooter, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/react';
 import { add, people, person, search, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-
+import Lottie from 'react-lottie';
+import animationData from '../components/Creator.json';
 
 interface User {
   id: number;
@@ -25,8 +26,31 @@ const HomePage: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    setUserName("Username"); 
-  },[]);
+    // Fetch user data after login
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:8000/api/user', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUserName(userData.name); // Update the userName state with the user's name
+        } else {
+          console.error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData(); // Call the function to fetch user data
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -88,11 +112,23 @@ const HomePage: React.FC = () => {
           <IonCard color="dark" style={{ backgroundColor: 'black' }}>
             <IonCardHeader></IonCardHeader>
             <IonCardContent>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 20, marginLeft: 20 }}>Welcome {userName}</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+              <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: animationData,
+              rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+              }
+            }}
+            height={150} // Adjust the height of the animation as needed
+            width={150} // Adjust the width of the animation as needed
+          />
+                <span style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 30, marginLeft: 40 }}>Welcome {userName}!</span>
               </div>
             </IonCardContent>
-            <h4 style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 15, marginLeft: 20 }}>Book A Turf Today!</h4>
+            <h4 style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 20, marginLeft: 20 }}>Book A Turf Today!</h4>
           </IonCard>
           <h2 style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 25, marginLeft: 20 }}>Best Turfs</h2>
           <IonGrid>
