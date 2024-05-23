@@ -21,6 +21,7 @@ import AuthPage from './pages/Auth';
 import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import SettingsPage from './pages/Settings';
+import ProfilePage from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -86,11 +87,14 @@ const App: React.FC = () => {
       ) : (
         <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/auth" component={AuthPage} exact/>
+          <Route path="/auth" component={AuthPage} exact />
           <Route path="/home" component={HomePage} exact />
           <Route path="/search" component={SearchPage} exact />
+          <Route path="/profile" component={ProfilePage} exact />
           <Route path="/settings" component={SettingsPage} />
-          <Redirect exact from="/" to="/auth" />
+          <Route exact path="/">
+              {authenticated ? <Redirect to="/home" /> : <Redirect to="/auth" />}
+</Route>
         </IonRouterOutlet>
       </IonReactRouter>
       )}

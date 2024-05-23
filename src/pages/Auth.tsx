@@ -54,6 +54,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         const data = await response.json();
         localStorage.setItem('token', data.token); 
         setShowSuccessAlert(true); 
+        history.push('/home');
       } else {
         if (response.status === 401) {
           setError('Invalid email or password');
@@ -96,6 +97,14 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
     if (!emailError && !passwordError) {
       handleLogin();
     } else {
+      setShowAlert(true);
+    }
+
+    try {
+      // API request code
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An unexpected error occurred');
       setShowAlert(true);
     }
   };

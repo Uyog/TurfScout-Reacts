@@ -4,11 +4,16 @@ import { add, people, person, search, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import animationData from '../components/Creator.json';
+import { Redirect } from 'react-router-dom';
 
 interface User {
   id: number;
   name: string;
   email: string;
+}
+
+interface HomePageProps {
+  authenticated: boolean;
 }
 
 interface ExampleCardProps {
@@ -20,7 +25,7 @@ interface ExampleCardProps {
   };
 }
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
   const [userName, setUserName] = useState<string>(""); 
   const [user, setUser] = useState<User | null>(null);
   const history = useHistory();
@@ -57,6 +62,7 @@ const HomePage: React.FC = () => {
       console.log('Logging out...');
   
       const token = localStorage.getItem('token');
+      console.log('Token before removal:', token);
   
       const response = await fetch('http://127.0.0.1:8000/api/logout', {
         method: 'POST',
@@ -71,14 +77,24 @@ const HomePage: React.FC = () => {
         console.log('Logged out successfully');
         localStorage.removeItem('token');
         console.log('Token removed');
-        history.push('/auth');
+        window.location.reload();
       } else {
         console.error('Logout failed:', response.statusText);
       }
     } catch (error) {
       console.error('Logout failed:', error);
     }
+    if (!authenticated) {
+      // Redirect to authentication page if not authenticated
+      return <Redirect to="/" />;
+    }
+
+    
   };
+
+ 
+
+  
 
   return (
     <>
@@ -203,7 +219,7 @@ const FabButton: React.FC<FabButtonProps> = ({ history }) => (
         <IonIcon icon={search}></IonIcon>
       </IonFabButton>
       <IonFabButton onClick={() => history.push('/profile')}> 
-        <IonIcon icon={people}></IonIcon>
+        <IonIcon icon={person}></IonIcon>
       </IonFabButton>
       <IonFabButton onClick={() => history.push('/settings')}> 
         <IonIcon icon={settings}></IonIcon>
