@@ -31,7 +31,6 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
   const history = useHistory();
 
   useEffect(() => {
-    // Fetch user data after login
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -45,7 +44,7 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
 
         if (response.ok) {
           const userData = await response.json();
-          setUserName(userData.name); // Update the userName state with the user's name
+          setUserName(userData.name); 
         } else {
           console.error('Failed to fetch user data');
         }
@@ -54,7 +53,7 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
       }
     };
 
-    fetchUserData(); // Call the function to fetch user data
+    fetchUserData(); 
   }, []);
 
   const handleLogout = async () => {
@@ -77,7 +76,7 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
         console.log('Logged out successfully');
         localStorage.removeItem('token');
         console.log('Token removed');
-        window.location.reload();
+        window.location.href = '/auth';
       } else {
         console.error('Logout failed:', response.statusText);
       }
@@ -85,7 +84,6 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
       console.error('Logout failed:', error);
     }
     if (!authenticated) {
-      // Redirect to authentication page if not authenticated
       return <Redirect to="/" />;
     }
 
@@ -138,8 +136,8 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
                 preserveAspectRatio: 'xMidYMid slice'
               }
             }}
-            height={150} // Adjust the height of the animation as needed
-            width={150} // Adjust the width of the animation as needed
+            height={150} 
+            width={150} 
           />
                 <span style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 30, marginLeft: 40 }}>Welcome {userName}!</span>
               </div>
