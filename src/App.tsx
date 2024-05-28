@@ -22,6 +22,7 @@ import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import SettingsPage from './pages/Settings';
 import ProfilePage from './pages/Profile';
+import TurfDetails from './pages/TurfDetails';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -52,6 +53,8 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import BookingForm from './pages/BookingForm';
+import RatingForm from './pages/RatingForm';
 
 setupIonicReact();
 
@@ -90,6 +93,9 @@ const App: React.FC = () => {
           <Route path="/auth" component={AuthPage} exact />
           <Route path="/home" component={HomePage} exact />
           <Route path="/search" component={SearchPage} exact />
+          <Route path="/bookings/create" component={BookingForm} exact />
+        <Route path="/bookings/:id/rating" component={RatingForm} exact />
+          <Route path="/turfs/:id" component={TurfDetails} exact />
           <Route path="/profile" component={ProfilePage} exact />
           <Route path="/settings" component={SettingsPage} />
           <Route exact path="/">

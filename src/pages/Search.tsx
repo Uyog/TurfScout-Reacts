@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonSearchbar } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonSearchbar, IonButtons, IonBackButton } from '@ionic/react';
 import Lottie from 'react-lottie';
 import animationData from '../components/Loading2.json';
 import axios from 'axios';
 import { debounce } from 'lodash';
 
-const Search: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [turfs, setTurfs] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const history = useHistory();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Handle missing token
       return;
     }
 
@@ -54,10 +55,18 @@ const Search: React.FC = () => {
     setSearchTerm(e.detail.value as string);
   };
 
+  const handleTurfClick = (id: string) => {
+    history.push(`/turfs/${id}`);
+  };
+
+
   return (
     <>
       <IonHeader>
         <IonToolbar>
+        <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
           <IonTitle>Turf Search</IonTitle>
         </IonToolbar>
         <IonToolbar>
@@ -89,7 +98,7 @@ const Search: React.FC = () => {
         {!loading && !error && (
           <IonList>
             {turfs.map(turf => (
-              <IonItem key={turf.id}>
+              <IonItem key={turf.id} button onClick={() => handleTurfClick(turf.id)}>
                 <IonLabel>
                   <h2>{turf.name}</h2>
                   <h3>{turf.location}</h3>
@@ -104,4 +113,4 @@ const Search: React.FC = () => {
   );
 };
 
-export default Search;
+export default SearchPage;

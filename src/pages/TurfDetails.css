@@ -1,0 +1,28 @@
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .turf-item img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .turf-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .turf-price {
+    font-weight: bold;
+    color: green;
+  }
+  
+  .button-item {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
