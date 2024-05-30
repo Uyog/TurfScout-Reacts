@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
 
 interface RatingFormProps {
   bookingId: string;
+  onClose: () => void;
 }
 
-const RatingForm: React.FC<RatingFormProps> = ({ bookingId }) => {
+const RatingForm: React.FC<RatingFormProps> = ({ bookingId, onClose }) => {
   const history = useHistory();
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>('');
@@ -22,17 +23,18 @@ const RatingForm: React.FC<RatingFormProps> = ({ bookingId }) => {
 
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/bookings/${bookingId}/rating`, {
-        rating: rating,
-        review: review,
+        rating,
+        review
       }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       console.log(response.data);
+      onClose(); // Close the modal after successful rating submission
       history.push(`/bookings/${bookingId}`);
     } catch (error: any) {
-      setError(error.response.data.error || 'Error submitting rating. Please try again later.');
+      setError(error.response?.data?.error || 'Error submitting rating. Please try again later.');
     }
   };
 
@@ -47,7 +49,7 @@ const RatingForm: React.FC<RatingFormProps> = ({ bookingId }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {error && <p>{error}</p>}
+        {error && <IonText color="danger"><p>{error}</p></IonText>}
         <IonItem>
           <IonLabel position="stacked">Rating</IonLabel>
           <IonInput type="number" value={rating} onIonChange={(e) => setRating(parseInt(e.detail.value!, 10))} />

@@ -102,7 +102,7 @@ const TurfDetails: React.FC = () => {
                 <BookingForm turfId={id} onClose={() => setShowModal(false)} />
               </IonContent>
             </IonModal>
-            {ratingAllowed && <RatingForm bookingId={id} />}
+            {ratingAllowed && <RatingForm bookingId={id} onClose={() => setShowModal(false)} />}
           </>
         )}
       </IonContent>

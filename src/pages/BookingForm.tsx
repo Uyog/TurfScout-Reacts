@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
+import moment from 'moment';
 
 interface BookingFormProps {
   turfId: string;
@@ -23,9 +24,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/bookings', {
+      // Directly using the bookingTime as 'HH:mm' format (24-hour format)
+      const formattedBookingTime = moment(bookingTime, 'HH:mm').format('HH:mm');
+
+      const response = await axios.post('http://127.0.0.1:8000/api/booking', {
         turf_id: turfId,
-        booking_time: bookingTime,
+        booking_time: formattedBookingTime,
         ball: ball,
         bib: bib,
       }, {
@@ -37,7 +41,9 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
       onClose(); // Close the modal after successful booking
       history.push(`/bookings/${response.data.id}`);
     } catch (error: any) {
-      setError(error.response.data.error || 'Error creating booking. Please try again later.');
+      console.error(error.response?.data);
+      setError(error.response?.data?.error || 'Error creating booking. Please try again later.');
+      
     }
   };
 
@@ -52,10 +58,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {error && <p>{error}</p>}
+        {error && <IonText color="danger"><p>{error}</p></IonText>}
         <IonItem>
           <IonLabel position="stacked">Booking Time</IonLabel>
-          <IonInput value={bookingTime} onIonChange={(e) => setBookingTime(e.detail.value!)} />
+          <IonInput
+            type="time"
+            value={bookingTime}
+            onIonChange={(e) => setBookingTime(e.detail.value!)}
+            placeholder="HH:MM"
+          />
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Ball</IonLabel>
