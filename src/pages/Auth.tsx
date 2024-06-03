@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import MyButton from '../components/Button';
-import Alert from '../components/Alert'; 
+import Alert from '../components/Alert';
 import { IonInput, IonItem, IonIcon } from '@ionic/react';
 import { eyeOffOutline, eyeOutline, lockClosedOutline, mailOutline, personOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import Lottie from 'react-lottie';
+import loadingAnimation from '../components/Loading2.json';
 
 
 interface LoginProps {
@@ -15,7 +17,7 @@ const roundedTextField = {
 };
 
 const textColorStyle = {
-  color: '#97FB57', 
+  color: '#97FB57',
 };
 
 const boldTextStyle = {
@@ -23,7 +25,7 @@ const boldTextStyle = {
 };
 
 const iconColorStyle = {
-  color: '#97FB57', 
+  color: '#97FB57',
 };
 
 
@@ -34,14 +36,16 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
   const [passwordError, setPasswordError] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showAlert, setShowAlert] = useState(false); 
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false); 
+  const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
-  
+
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const response = await fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
         headers: {
@@ -52,8 +56,8 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); 
-        setShowSuccessAlert(true); 
+        localStorage.setItem('token', data.token);
+        setShowSuccessAlert(true);
         history.push('/home');
       } else {
         if (response.status === 401) {
@@ -67,6 +71,8 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
       console.error('Login error:', error);
       setError('An unexpected error occurred');
       setShowAlert(true);
+    } finally {
+      setLoading(false); // Hide loading animation
     }
   };
 
@@ -80,7 +86,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
     }
   };
 
-  
+
   const validatePassword = (value: string) => {
     if (!value) {
       setPasswordError('Password is required');
@@ -89,7 +95,7 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
     }
   };
 
-  
+
   const handleSubmit = () => {
     validateEmail(email);
     validatePassword(password);
@@ -112,6 +118,11 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
   return (
     <div className="container" style={textColorStyle}>
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Lottie options={{ animationData: loadingAnimation }} width={100} height={100} />
+        </div>
+      )}
       <h1 style={{ ...textColorStyle, ...boldTextStyle }}>Welcome to TurfScout</h1>
       <IonItem style={{ ...roundedTextField, borderColor: emailError ? 'red' : '' }}>
         <IonIcon icon={mailOutline} slot="start" style={iconColorStyle} />
@@ -128,16 +139,16 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
         <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
         <IonInput
           placeholder='Password'
-          type={showPassword ? 'text' : 'password'} 
+          type={showPassword ? 'text' : 'password'}
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
-          style={textColorStyle} 
+          style={textColorStyle}
         />
         <IonIcon
-          icon={showPassword ? eyeOffOutline : eyeOutline} 
+          icon={showPassword ? eyeOffOutline : eyeOutline}
           slot="end"
-          onClick={() => setShowPassword(!showPassword)} 
-          style={iconColorStyle} 
+          onClick={() => setShowPassword(!showPassword)}
+          style={iconColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -148,36 +159,36 @@ const Login: React.FC<LoginProps> = ({ onSignUpClick }) => {
 
 
 
-    
+
       <Alert
         isOpen={showSuccessAlert}
         onClose={() => {
           setShowSuccessAlert(false);
-          history.push('/home'); 
+          history.push('/home');
         }}
-        title="Success" 
+        title="Success"
         content="You have logged in successfully."
         onSuccess={() => {
           setShowSuccessAlert(false);
-          history.push('/home'); 
+          history.push('/home');
         }}
-       
+
       />
-      
+
       <>
 
-    <Alert
-      isOpen={showAlert}
-      onClose={() => setShowAlert(false)}
-      title="Error"
-      content={error}
-      onSuccess={() => {
-        setShowAlert(false);
-        setError('');
-      }}
-     
-    />
-  </>
+        <Alert
+          isOpen={showAlert}
+          onClose={() => setShowAlert(false)}
+          title="Error"
+          content={error}
+          onSuccess={() => {
+            setShowAlert(false);
+            setError('');
+          }}
+
+        />
+      </>
     </div>
   );
 };
@@ -194,15 +205,17 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signedUp, setSignedUp] = useState(false);
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
-  const [showAlert, setShowAlert] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
-  
+
   const handleSignUp = async () => {
     try {
+      setLoading(true);
       const response = await fetch('http://127.0.0.1:8000/api/register', {
         method: 'POST',
         headers: {
@@ -229,24 +242,31 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
       console.error('Sign up error:', error);
       setError('An unexpected error occurred');
       setShowAlert(true);
+    } finally {
+      setLoading(false); // Hide loading animation
     }
   };
 
 
- 
+
   if (signedUp) {
     return (
       <div className="container" style={textColorStyle}>
-      <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up Successful</h1>
-      <p style={{ textAlign: 'center' }}>Your account has been created successfully.</p>
-      <p style={{ textAlign: 'center' }}>Please <span onClick={onLoginClick} style={{ ...textColorStyle, ...boldTextStyle }}>login</span> to continue.</p>
-    </div>
+        <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up Successful</h1>
+        <p style={{ textAlign: 'center' }}>Your account has been created successfully.</p>
+        <p style={{ textAlign: 'center' }}>Please <span onClick={onLoginClick} style={{ ...textColorStyle, ...boldTextStyle }}>login</span> to continue.</p>
+      </div>
     );
   }
 
   return (
-    <div className="container" style={textColorStyle}> 
-       <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up</h1>
+    <div className="container" style={textColorStyle}>
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Lottie options={{ animationData: loadingAnimation }} width={100} height={100} />
+        </div>
+      )}
+      <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Sign Up</h1>
       <IonItem style={roundedTextField}>
         <IonIcon icon={personOutline} slot="start" style={iconColorStyle} />
         <IonInput
@@ -254,7 +274,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type="text"
           value={name}
           onIonChange={(e) => setName(e.detail.value!)}
-          style={textColorStyle} 
+          style={textColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -265,7 +285,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type="email"
           value={email}
           onIonChange={(e) => setEmail(e.detail.value!)}
-          style={textColorStyle} 
+          style={textColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -276,13 +296,13 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type={showPassword ? 'text' : 'password'}
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
-          style={textColorStyle} 
+          style={textColorStyle}
         />
         <IonIcon
-          icon={showPassword ? eyeOffOutline : eyeOutline} 
+          icon={showPassword ? eyeOffOutline : eyeOutline}
           slot="end"
-          onClick={() => setShowPassword(!showPassword)} 
-          style={iconColorStyle} 
+          onClick={() => setShowPassword(!showPassword)}
+          style={iconColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -293,13 +313,13 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
           type={showConfirmPassword ? 'text' : 'password'}
           value={confirmPassword}
           onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-          style={textColorStyle} 
+          style={textColorStyle}
         />
         <IonIcon
-          icon={showConfirmPassword ? eyeOffOutline : eyeOutline} 
+          icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
           slot="end"
-          onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-          style={iconColorStyle} 
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          style={iconColorStyle}
         />
       </IonItem>
       <div style={{ marginBottom: '16px' }} />
@@ -310,36 +330,42 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
 
 
       <>
-   
-    <Alert
-      isOpen={showAlert}
-      onClose={() => setShowAlert(false)}
-      title="Error"
-      content={error}
-      onSuccess={() => {
-        setShowAlert(false);
-        setError('');
-      }}
-    />
-  </>
+
+        <Alert
+          isOpen={showAlert}
+          onClose={() => setShowAlert(false)}
+          title="Error"
+          content={error}
+          onSuccess={() => {
+            setShowAlert(false);
+            setError('');
+          }}
+        />
+      </>
     </div>
   );
 };
 
 
 const LoginOrSignUp = () => {
-  
-  const [showLogin, setShowLogin] = useState(true);
 
-  
+  const [showLogin, setShowLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+
   const handleToggle = () => {
     setShowLogin(!showLogin);
   };
 
-  
+
   return (
-    <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ width: '300px' }}>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {loading && (
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          <Lottie options={{ animationData: loadingAnimation }} width={100} height={100} />
+        </div>
+      )}
+      <div style={{ width: '300px', margin: '0 auto' }}>
         {showLogin ? (
           <Login onSignUpClick={handleToggle} />
         ) : (
