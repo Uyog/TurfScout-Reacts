@@ -18,6 +18,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, home, search, settings, square, triangle } from 'ionicons/icons';
 import Splash from './pages/Splash';
 import AuthPage from './pages/Auth';
+import LoginPage from './pages/Login';
+import SignUp from './pages/SignUp';
 import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import SettingsPage from './pages/Settings';
@@ -63,15 +65,15 @@ const App: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    
+
     setTimeout(() => {
-      setLoading(false); 
+      setLoading(false);
     }, 3000);
   }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setAuthenticated(!!token); 
+    setAuthenticated(!!token);
   }, []);
 
   const handleAuthentication = (isAuthenticated: boolean) => {
@@ -79,30 +81,30 @@ const App: React.FC = () => {
   };
 
   const handleAnimationComplete = () => {
-    
+
     console.log('Animation completed');
   };
 
   return (
     <IonApp>
       {loading ? (
-        <SplashScreen onAnimationComplete={handleAnimationComplete} /> 
+        <SplashScreen onAnimationComplete={handleAnimationComplete} />
       ) : (
         <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/auth" component={AuthPage} exact />
-          <Route path="/home" component={HomePage} exact />
-          <Route path="/search" component={SearchPage} exact />
-          <Route path="/bookings/create" component={BookingForm} exact />
-        <Route path="/bookings/:id/rating" component={RatingForm} exact />
-          <Route path="/turfs/:id" component={TurfDetails} exact />
-          <Route path="/profile" component={ProfilePage} exact />
-          <Route path="/settings" component={SettingsPage} />
-          <Route exact path="/">
+          <IonRouterOutlet>
+            <Route path="/auth" component={AuthPage} exact />
+            <Route path="/home" component={HomePage} exact />
+            <Route path="/search" component={SearchPage} exact />
+            <Route path="/bookings/create" component={BookingForm} exact />
+            <Route path="/bookings/:id/rating" component={RatingForm} exact />
+            <Route path="/turfs/:id" component={TurfDetails} exact />
+            <Route path="/profile" component={ProfilePage} exact />
+            <Route path="/settings" component={SettingsPage} />
+            <Route exact path="/">
               {authenticated ? <Redirect to="/home" /> : <Redirect to="/auth" />}
-</Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
       )}
     </IonApp>
   );
