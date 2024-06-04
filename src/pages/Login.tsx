@@ -10,6 +10,7 @@ import './Auth.css';
 
 interface LoginProps {
     onSignUpClick: () => void;
+    onForgotPasswordClick: () => void;
 }
 
 const roundedTextField = {
@@ -34,7 +35,7 @@ const errorTextStyle = {
     fontSize: '12px',
 };
 
-const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
+const Login: React.FC<LoginProps> = ({ onSignUpClick, onForgotPasswordClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -157,7 +158,8 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
             {isSubmitted && passwordError && <IonText style={errorTextStyle}>{passwordError}</IonText>}
             <MyButton text="Login" onClick={handleSubmit} />
             <p style={{ textAlign: 'center' }}>Don't have an account? <span onClick={onSignUpClick} style={{ ...textColorStyle, ...boldTextStyle }}>Sign Up</span></p>
-            <p style={{ textAlign: 'center' }}><span onClick={() => console.log('Forgot password clicked')} style={textColorStyle}>Forgot Password?</span></p>
+            <p style={{ textAlign: 'center' }}><span onClick={() => history.push('/forgot-password')} style={textColorStyle}>Forgot Password?</span></p>
+
 
             <Alert
                 isOpen={showAlert}
@@ -174,4 +176,4 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
     );
 };
 
-export default LoginPage;
+export default Login;

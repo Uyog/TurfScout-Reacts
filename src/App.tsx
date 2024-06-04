@@ -25,6 +25,7 @@ import SearchPage from './pages/Search';
 import SettingsPage from './pages/Settings';
 import ProfilePage from './pages/Profile';
 import TurfDetails from './pages/TurfDetails';
+import ForgotPassword from './pages/ForgotPassword';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -100,6 +101,7 @@ const App: React.FC = () => {
             <Route path="/turfs/:id" component={TurfDetails} exact />
             <Route path="/profile" component={ProfilePage} exact />
             <Route path="/settings" component={SettingsPage} />
+            <Route path="/forgot-password" component={ForgotPassword} exact />
             <Route exact path="/">
               {authenticated ? <Redirect to="/home" /> : <Redirect to="/auth" />}
             </Route>
