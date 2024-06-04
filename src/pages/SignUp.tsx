@@ -13,6 +13,7 @@ interface SignUpProps {
 
 const roundedTextField = {
     borderRadius: '20px',
+    marginBottom: '16px', // Add margin bottom to space out the fields
 };
 
 const textColorStyle = {
@@ -59,19 +60,18 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
                 setAlertType('success');
                 setShowAlert(true);
                 setSignedUp(true);
-                onLoginClick();
             } else {
                 if (response.status === 400) {
-                    setError('Validation failed');
+                    setError('Validation failed. Please check your input and try again.');
                 } else {
-                    setError('An unexpected error occurred');
+                    setError('An unexpected error occurred. Please try again.');
                 }
                 setAlertType('error');
                 setShowAlert(true);
             }
         } catch (error) {
             console.error('Sign up error:', error);
-            setError('An unexpected error occurred');
+            setError('An unexpected error occurred. Please try again later.');
             setAlertType('error');
             setShowAlert(true);
         } finally {
@@ -107,7 +107,6 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
                     style={textColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
             <IonItem style={roundedTextField}>
                 <IonIcon icon={mailOutline} slot="start" style={iconColorStyle} />
                 <IonInput
@@ -118,7 +117,6 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
                     style={textColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
             <IonItem style={roundedTextField}>
                 <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
                 <IonInput
@@ -135,7 +133,6 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
                     style={iconColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
             <IonItem style={roundedTextField}>
                 <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
                 <IonInput
@@ -152,7 +149,6 @@ const SignUp: React.FC<SignUpProps> = ({ onLoginClick }) => {
                     style={iconColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
             {error && <p style={{ ...textColorStyle, textAlign: 'center' }}>{error}</p>}
             <MyButton text="Sign Up" onClick={handleSignUp} />
             <p style={{ textAlign: 'center' }}>Already have an account? <span onClick={onLoginClick} style={{ ...textColorStyle, ...boldTextStyle }}>Login</span></p>

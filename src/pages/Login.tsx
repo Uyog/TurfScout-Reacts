@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MyButton from '../components/Button';
 import Alert from '../components/Alert';
-import { IonInput, IonItem, IonIcon } from '@ionic/react';
+import { IonInput, IonItem, IonIcon, IonText } from '@ionic/react';
 import { eyeOffOutline, eyeOutline, lockClosedOutline, mailOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import loadingAnimation from '../components/Loading2.json';
+import './Auth.css';
 
 interface LoginProps {
     onSignUpClick: () => void;
@@ -13,6 +14,7 @@ interface LoginProps {
 
 const roundedTextField = {
     borderRadius: '20px',
+    marginBottom: '16px',
 };
 
 const textColorStyle = {
@@ -27,6 +29,11 @@ const iconColorStyle = {
     color: '#97FB57',
 };
 
+const errorTextStyle = {
+    color: 'red',
+    fontSize: '12px',
+};
+
 const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,6 +44,7 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
     const [showAlert, setShowAlert] = useState(false);
     const [alertType, setAlertType] = useState<'success' | 'error'>('error');
     const [loading, setLoading] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const history = useHistory();
 
@@ -58,16 +66,16 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
                 setShowAlert(true);
             } else {
                 if (response.status === 401) {
-                    setError('Invalid email or password');
+                    setError('Invalid email or password. Please check your credentials and try again.');
                 } else {
-                    setError('An unexpected error occurred');
+                    setError('An unexpected error occurred. Please try again.');
                 }
                 setAlertType('error');
                 setShowAlert(true);
             }
         } catch (error) {
             console.error('Login error:', error);
-            setError('An unexpected error occurred');
+            setError('An unexpected error occurred. Please try again.');
             setAlertType('error');
             setShowAlert(true);
         } finally {
@@ -94,6 +102,7 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
     };
 
     const handleSubmit = () => {
+        setIsSubmitted(true);
         validateEmail(email);
         validatePassword(password);
 
@@ -102,25 +111,22 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
         } else {
             setShowAlert(true);
         }
-
-        try {
-            // API request code
-        } catch (error) {
-            console.error('Error:', error);
-            setError('An unexpected error occurred');
-            setAlertType('error');
-            setShowAlert(true);
-        }
     };
 
+    useEffect(() => {
+        if (isSubmitted && (emailError || passwordError)) {
+            setShowAlert(true);
+        }
+    }, [emailError, passwordError, isSubmitted]);
+
     return (
-        <div className="container" style={textColorStyle}>
+        <div className="container">
             {loading && (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Lottie options={{ animationData: loadingAnimation }} width={100} height={100} />
                 </div>
             )}
-            <h1 style={{ ...textColorStyle, ...boldTextStyle }}>Welcome to TurfScout</h1>
+            <h1 style={{ ...textColorStyle, ...boldTextStyle, textAlign: 'center' }}>Login</h1>
             <IonItem style={{ ...roundedTextField, borderColor: emailError ? 'red' : '' }}>
                 <IonIcon icon={mailOutline} slot="start" style={iconColorStyle} />
                 <IonInput
@@ -131,8 +137,8 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
                     style={textColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
-            <IonItem style={roundedTextField}>
+            {isSubmitted && emailError && <IonText style={errorTextStyle}>{emailError}</IonText>}
+            <IonItem style={{ ...roundedTextField, borderColor: passwordError ? 'red' : '' }}>
                 <IonIcon icon={lockClosedOutline} slot="start" style={iconColorStyle} />
                 <IonInput
                     placeholder='Password'
@@ -148,8 +154,7 @@ const LoginPage: React.FC<LoginProps> = ({ onSignUpClick }) => {
                     style={iconColorStyle}
                 />
             </IonItem>
-            <div style={{ marginBottom: '16px' }} />
-
+            {isSubmitted && passwordError && <IonText style={errorTextStyle}>{passwordError}</IonText>}
             <MyButton text="Login" onClick={handleSubmit} />
             <p style={{ textAlign: 'center' }}>Don't have an account? <span onClick={onSignUpClick} style={{ ...textColorStyle, ...boldTextStyle }}>Sign Up</span></p>
             <p style={{ textAlign: 'center' }}><span onClick={() => console.log('Forgot password clicked')} style={textColorStyle}>Forgot Password?</span></p>

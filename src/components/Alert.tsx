@@ -23,19 +23,7 @@ const Alert: React.FC<AlertProps> = ({ isOpen, type, content, onClose }) => {
     },
   };
 
-  return (
-    <div style={styles.overlay}>
-      <div style={styles.alertBox}>
-        <Lottie options={defaultOptions} height={100} width={100} />
-        <p style={styles.message}>{content}</p>
-        <button onClick={onClose} style={styles.button}>OK</button>
-      </div>
-    </div>
-  );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  overlay: {
+  const overlayStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -45,26 +33,40 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  alertBox: {
+    zIndex: 9999, // Set a high z-index to ensure the alert is on top of other content
+  };
+
+  const alertBoxStyle: React.CSSProperties = {
     backgroundColor: '#000',
     color: '#0f0',
     borderRadius: '10px',
     padding: '20px',
     textAlign: 'center',
     width: '300px',
-  },
-  message: {
+  };
+
+  const messageStyle: React.CSSProperties = {
     margin: '20px 0',
-  },
-  button: {
+  };
+
+  const buttonStyle: React.CSSProperties = {
     backgroundColor: '#0f0',
     color: '#000',
     border: 'none',
     borderRadius: '5px',
     padding: '10px 20px',
     cursor: 'pointer',
-  },
+  };
+
+  return (
+    <div style={overlayStyle}>
+      <div style={alertBoxStyle}>
+        <Lottie options={defaultOptions} height={100} width={100} />
+        <p style={messageStyle}>{content}</p>
+        <button onClick={onClose} style={buttonStyle}>OK</button>
+      </div>
+    </div>
+  );
 };
 
 export default Alert;
