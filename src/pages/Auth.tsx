@@ -3,7 +3,6 @@ import Lottie from 'react-lottie';
 import loadingAnimation from '../components/Loading2.json';
 import Login from './Login';
 import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
 import './Auth.css';
 
 const Auth: React.FC = () => {
@@ -18,6 +17,12 @@ const Auth: React.FC = () => {
 
     const handleForgotPassword = () => {
         setShowForgotPassword(true);
+        setShowLogin(false);
+    };
+
+    const handleBackFromForgotPassword = () => {
+        setShowForgotPassword(false);
+        setShowLogin(true);
     };
 
     return (
@@ -29,20 +34,17 @@ const Auth: React.FC = () => {
             )}
             <h1 className="welcome-heading">Welcome to TurfScout!</h1>
             <div className="center-container">
-                {!showForgotPassword ? (
-                    <div className={`card ${showLogin ? '' : 'is-flipped'}`}>
-                        <div className="card-inner">
-                            <div className="front">
-                                <Login onSignUpClick={handleToggle} onForgotPasswordClick={handleForgotPassword} />
-                            </div>
-                            <div className="back">
-                                <SignUp onLoginClick={handleToggle} />
-                            </div>
+                <div className={`card ${showForgotPassword ? 'is-flipped-forgot' : showLogin ? '' : 'is-flipped'}`}>
+                    <div className="card-inner">
+                        <div className="front">
+                            <Login onSignUpClick={handleToggle} onForgotPasswordClick={handleForgotPassword} />
                         </div>
+                        <div className="back">
+                            <SignUp onLoginClick={handleToggle} />
+                        </div>
+                            
                     </div>
-                ) : (
-                    <ForgotPassword />
-                )}
+                </div>
             </div>
         </div>
     );
