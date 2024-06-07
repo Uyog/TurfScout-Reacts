@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton } from '@ionic/react';
 
 const ProfilePage: React.FC = () => {
-  const [user, setUser] = useState<{ id: number; name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ id: number; name: string; email: string; profile_picture: string | null } | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchCurrentUser();
@@ -31,7 +32,7 @@ const ProfilePage: React.FC = () => {
   const handleUpdateProfile = async () => {
     const newName = prompt('Enter new name:') || '';
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/user/${user?.id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/user/${user?.id}/name`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,6 +73,41 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleUpdateProfilePicture = async () => {
+    if (!selectedFile) {
+      alert('Please select a file first.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('profile_picture', selectedFile);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/user/profile-picture', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUser(updatedUser.user); // Assuming the response contains the updated user object
+        alert('Profile picture updated successfully');
+      } else {
+        console.error('Failed to update profile picture:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -86,6 +122,13 @@ const ProfilePage: React.FC = () => {
         {user ? (
           <div>
             <div>
+              {user.profile_picture ? (
+                <img src={`http://127.0.0.1:8000/storage/${user.profile_picture}`} alt="Profile" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
+              ) : (
+                <p>No profile picture available</p>
+              )}
+            </div>
+            <div>
               <strong>Name:</strong> {user.name}
             </div>
             <div>
@@ -93,6 +136,10 @@ const ProfilePage: React.FC = () => {
             </div>
             <button onClick={handleUpdateProfile}>Update Profile</button>
             <button onClick={handleDeleteAccount}>Delete Account</button>
+            <div>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <button onClick={handleUpdateProfilePicture}>Update Profile Picture</button>
+            </div>
           </div>
         ) : (
           <div>Loading...</div>
