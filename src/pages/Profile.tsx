@@ -1,9 +1,12 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton } from '@ionic/react';
+import MyButton from '../components/Button';
+import { FaCamera } from 'react-icons/fa';
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<{ id: number; name: string; email: string; profile_picture: string | null } | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchCurrentUser();
@@ -76,17 +79,13 @@ const ProfilePage: React.FC = () => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
+      handleUpdateProfilePicture(event.target.files[0]);
     }
   };
 
-  const handleUpdateProfilePicture = async () => {
-    if (!selectedFile) {
-      alert('Please select a file first.');
-      return;
-    }
-
+  const handleUpdateProfilePicture = async (file: File) => {
     const formData = new FormData();
-    formData.append('profile_picture', selectedFile);
+    formData.append('profile_picture', file);
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/user/profile-picture', {
@@ -113,36 +112,61 @@ const ProfilePage: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
+            <IonBackButton defaultHref="/home" style={{ color: '#97FB57' }} />
           </IonButtons>
-          <strong>User Profile</strong>
+          <h1 style={{ textAlign: 'center', color: '#97FB57' }}>PROFILE</h1>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         {user ? (
-          <div>
-            <div>
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <div style={{ position: 'relative', marginBottom: '20px' }}>
               {user.profile_picture ? (
-                <img src={`http://127.0.0.1:8000/storage/${user.profile_picture}`} alt="Profile" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
+                <img 
+                  src={`http://127.0.0.1:8000/storage/${user.profile_picture}`} 
+                  alt="Profile" 
+                  style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover' }} 
+                />
               ) : (
                 <p>No profile picture available</p>
               )}
+              <div 
+                style={{
+                  position: 'absolute',
+                  bottom: '3px',
+                  right: '90px',
+                  backgroundColor: '#97FB57',
+                  borderRadius: '50%',
+                  padding: '10px',
+                  cursor: 'pointer',
+                }}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <FaCamera color="#121212" />
+              </div>
             </div>
-            <div>
+            <div style={{ marginBottom: '20px', color: '#97FB57' }}>
               <strong>Name:</strong> {user.name}
             </div>
-            <div>
+            <div style={{ marginBottom: '20px', color: '#97FB57' }}>
               <strong>Email:</strong> {user.email}
             </div>
-            <button onClick={handleUpdateProfile}>Update Profile</button>
-            <button onClick={handleDeleteAccount}>Delete Account</button>
-            <div>
-              <input type="file" accept="image/*" onChange={handleFileChange} />
-              <button onClick={handleUpdateProfilePicture}>Update Profile Picture</button>
+            <div style={{ marginBottom: '20px' }}>
+              <MyButton text="Update" onClick={handleUpdateProfile} />
             </div>
+            <div style={{ marginBottom: '20px' }}>
+              <MyButton text="Delete" onClick={handleDeleteAccount} />
+            </div>
+            <input 
+              type="file" 
+              accept="image/*" 
+              ref={fileInputRef} 
+              style={{ display: 'none' }} 
+              onChange={handleFileChange} 
+            />
           </div>
         ) : (
-          <div>Loading...</div>
+          <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>
         )}
       </IonContent>
     </IonPage>
