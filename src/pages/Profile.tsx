@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton } from '@ionic/react';
 import MyButton from '../components/Button';
-import { FaCamera } from 'react-icons/fa';
+import { FaCamera, FaUser } from 'react-icons/fa';
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<{ id: number; name: string; email: string; profile_picture: string | null } | null>(null);
@@ -66,7 +66,7 @@ const ProfilePage: React.FC = () => {
         });
         if (response.ok) {
           alert('Account deleted successfully');
-          // You may want to redirect the user to the login page or perform additional cleanup
+          
         } else {
           console.error('Failed to delete account:', response.statusText);
         }
@@ -97,7 +97,7 @@ const ProfilePage: React.FC = () => {
       });
       if (response.ok) {
         const updatedUser = await response.json();
-        setUser(updatedUser.user); // Assuming the response contains the updated user object
+        setUser(updatedUser.user); 
         alert('Profile picture updated successfully');
       } else {
         console.error('Failed to update profile picture:', response.statusText);
@@ -128,7 +128,7 @@ const ProfilePage: React.FC = () => {
                   style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover' }} 
                 />
               ) : (
-                <p>No profile picture available</p>
+                <FaUser style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', backgroundColor: '#ccc', padding: '20px' }} />
               )}
               <div 
                 style={{
