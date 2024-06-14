@@ -92,9 +92,9 @@ const TurfDetails: React.FC = () => {
             <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
               <IonHeader>
                 <IonToolbar>
-                  <IonTitle>Book Turf</IonTitle>
+                  <IonTitle  style={{ color: '#97FB57',}}>Book Turf</IonTitle>
                   <IonButtons slot="end">
-                    <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
+                    <IonButton   style={{ color: '#97FB57',}} onClick={() => setShowModal(false)}>Close</IonButton>
                   </IonButtons>
                 </IonToolbar>
               </IonHeader>
@@ -102,7 +102,7 @@ const TurfDetails: React.FC = () => {
                 <BookingForm turfId={id} onClose={() => setShowModal(false)} />
               </IonContent>
             </IonModal>
-            {ratingAllowed && <RatingForm bookingId={id} onClose={() => setShowModal(false)} />}
+            {ratingAllowed && <RatingForm bookingId={id} onClose={() => setShowModal(false)} bookingEndTime={''} />}
           </>
         )}
       </IonContent>
