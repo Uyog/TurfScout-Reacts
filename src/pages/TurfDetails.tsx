@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonModal, IonButton } from '@ionic/react';
 import axios from 'axios';
 import BookingForm from './BookingForm';
-import RatingForm from './RatingForm';
 import MyButton from '../components/Button';
 import './TurfDetails.css';
 
@@ -102,7 +101,6 @@ const TurfDetails: React.FC = () => {
                 <BookingForm turfId={id} onClose={() => setShowModal(false)} />
               </IonContent>
             </IonModal>
-            {ratingAllowed && <RatingForm bookingId={id} onClose={() => setShowModal(false)} bookingEndTime={''} />}
           </>
         )}
       </IonContent>

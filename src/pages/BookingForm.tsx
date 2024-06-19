@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonLabel, IonItem, IonInput, IonText } from '@ionic/react';
+import {  IonContent, IonLabel, IonItem, IonInput, IonText } from '@ionic/react';
 import moment from 'moment';
 import MyButton from '../components/Button';
 import pitchImage from '../components/pitch.webp'; 
@@ -79,8 +79,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
   };
 
   const totalPrice = 2500 + (ball > 0 ? ball * 500 : 0) + (bib > 0 ? bib * 100 : 0);
-
-  
   const pitchImageSrc = pitchImage;
 
   return (

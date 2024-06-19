@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import SplashScreen from '../src/pages/Splash';
-import Auth from './pages/Auth';
-import Home from './pages/Home';
 import './components/Alert.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, home, search, settings, square, triangle } from 'ionicons/icons';
-import Splash from './pages/Splash';
 import AuthPage from './pages/Auth';
-import LoginPage from './pages/Login';
-import SignUp from './pages/SignUp';
 import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import SettingsPage from './pages/Settings';
 import ProfilePage from './pages/Profile';
 import TurfDetails from './pages/TurfDetails';
 import ForgotPassword from './pages/ForgotPassword';
+import BookingForm from './pages/BookingForm';
+import BookingStatus from './pages/BookingStatus';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -56,8 +48,8 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import BookingForm from './pages/BookingForm';
-import RatingForm from './pages/RatingForm';
+import moment from 'moment';
+
 
 setupIonicReact();
 
@@ -66,7 +58,6 @@ const App: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-
     setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -77,14 +68,16 @@ const App: React.FC = () => {
     setAuthenticated(!!token);
   }, []);
 
+ 
   const handleAuthentication = (isAuthenticated: boolean) => {
     setAuthenticated(isAuthenticated);
   };
 
   const handleAnimationComplete = () => {
-
     console.log('Animation completed');
   };
+
+ 
 
   return (
     <IonApp>
@@ -97,17 +90,18 @@ const App: React.FC = () => {
             <Route path="/home" component={HomePage} exact />
             <Route path="/search" component={SearchPage} exact />
             <Route path="/bookings/create" component={BookingForm} exact />
-            <Route path="/bookings/:id/rating" component={RatingForm} exact />
             <Route path="/turfs/:id" component={TurfDetails} exact />
             <Route path="/profile" component={ProfilePage} exact />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/forgot-password" component={ForgotPassword} exact />
+           
             <Route exact path="/">
               {authenticated ? <Redirect to="/home" /> : <Redirect to="/auth" />}
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
       )}
+      
     </IonApp>
   );
 };
