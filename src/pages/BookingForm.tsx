@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import {  IonContent, IonLabel, IonItem, IonInput, IonText } from '@ionic/react';
+import { IonContent, IonLabel, IonItem, IonInput, IonText } from '@ionic/react';
 import moment from 'moment';
 import MyButton from '../components/Button';
-import pitchImage from '../components/pitch.webp'; 
+import pitchImage from '../components/pitch.webp';
 
 interface BookingFormProps {
   turfId: string;
@@ -58,6 +58,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
     try {
       const formattedBookingTime = moment(bookingTime, 'HH:mm').format('HH:mm');
 
+      // Log state values to debug
+      console.log('Pitch:', pitch);
+      console.log('Booking Time:', formattedBookingTime);
+      console.log('Ball:', ball);
+      console.log('Bib:', bib);
+
       const response = await axios.post('http://127.0.0.1:8000/api/booking', {
         turf_id: turfId,
         booking_time: formattedBookingTime,
@@ -71,7 +77,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
       });
       console.log(response.data);
       onClose(); 
-      history.push(`/bookings/${response.data.id}`);
+      history.push(`/bookings`);
     } catch (error: any) {
       console.error(error.response?.data);
       setError(error.response?.data?.error || 'Error creating booking. Please try again later.');

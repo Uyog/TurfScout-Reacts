@@ -2,11 +2,13 @@ import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton } from '@ionic/react';
 import MyButton from '../components/Button';
 import { FaCamera, FaUser } from 'react-icons/fa';
+import { useHistory } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<{ id: number; name: string; email: string; profile_picture: string | null } | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const history = useHistory();
 
   useEffect(() => {
     fetchCurrentUser();
@@ -107,6 +109,10 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const navigateToBookingHistory = () => {
+    history.push('/booking-history');
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -156,6 +162,9 @@ const ProfilePage: React.FC = () => {
             </div>
             <div style={{ marginBottom: '20px' }}>
               <MyButton text="Delete" onClick={handleDeleteAccount} />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <MyButton text="Booking History" onClick={navigateToBookingHistory} />
             </div>
             <input 
               type="file" 

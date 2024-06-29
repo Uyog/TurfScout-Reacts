@@ -17,6 +17,8 @@ import TurfDetails from './pages/TurfDetails';
 import ForgotPassword from './pages/ForgotPassword';
 import BookingForm from './pages/BookingForm';
 import BookingStatus from './pages/BookingStatus';
+import BookingHistory from './pages/BookingHistory';
+
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -90,8 +92,10 @@ const App: React.FC = () => {
             <Route path="/home" component={HomePage} exact />
             <Route path="/search" component={SearchPage} exact />
             <Route path="/bookings/create" component={BookingForm} exact />
+            <Route path="/bookings" component={BookingStatus} exact />
             <Route path="/turfs/:id" component={TurfDetails} exact />
             <Route path="/profile" component={ProfilePage} exact />
+            <Route path="/booking-history" component={BookingHistory} exact />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/forgot-password" component={ForgotPassword} exact />
            
