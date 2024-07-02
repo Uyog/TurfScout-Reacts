@@ -52,7 +52,7 @@ ion-fab-button {
 
 .card-container ion-card {
   width: 90%;
-  height: 80%;
+  height: 50%;
   backface-visibility: hidden;
   position: absolute;
   transition: transform 0.6s;
@@ -60,7 +60,7 @@ ion-fab-button {
 }
 
 .card-container ion-card:nth-child(2) {
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
 }
 
 .card-container.flipped ion-card:nth-child(1) {
@@ -69,4 +69,21 @@ ion-fab-button {
 
 .card-container.flipped ion-card:nth-child(2) {
   transform: rotateY(0deg);
+}
+
+.welcome-card {
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+  background-color: #1c1c1c;
+  color: #97FB57;
+  border-radius: 15px;
+}
+
+.booking-status-card {
+  margin: 20px;
+  padding: 20px;
+  background-color: #1c1c1c;
+  color: #97FB57;
+  border-radius: 15px;
 }

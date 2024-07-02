@@ -77,7 +77,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ turfId, onClose }) => {
       });
       console.log(response.data);
       onClose(); 
-      history.push(`/bookings`);
+      history.push(`/home`);
     } catch (error: any) {
       console.error(error.response?.data);
       setError(error.response?.data?.error || 'Error creating booking. Please try again later.');
