@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonLabel } from '@ionic/react';
+import Lottie from 'react-lottie';
+import animationData from '../components/Welcome.json'; // Replace with your Lottie animation file
 
 type Turf = {
   id: number;
@@ -17,11 +19,6 @@ type Booking = {
   booking_status: string;
   total_price: number;
 };
-
-interface BookingStatusProps {
-    bookingData: Booking[]; // Define the type for bookingData prop
-  }
-  
 
 const BookingStatus: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -74,21 +71,42 @@ const BookingStatus: React.FC = () => {
     .sort((a, b) => new Date(b.formatted_booking_time).getTime() - new Date(a.formatted_booking_time).getTime())[0];
 
   return (
-    <IonCard>
+    <IonCard style={{ backgroundColor: '#1c1c1c', color: '#97FB57', borderRadius: '15px' }}>
       <IonCardHeader>
-        <IonCardTitle>{currentBooking?.turf.name}</IonCardTitle>
-        <IonCardSubtitle>{currentBooking?.turf.location}</IonCardSubtitle>
-        <IonCardSubtitle>{currentBooking?.formatted_booking_date}</IonCardSubtitle>
+        <IonCardTitle style={{ color: '#97FB57' }}>Booking Status</IonCardTitle>
+        <IonCardSubtitle style={{ color: '#97FB57' }}>
+          {currentBooking ? "Here are the details of your current booking:" : "You have no active bookings."}
+        </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
-        <IonItem>
-          <IonLabel>
-            <h2><strong>Pitch Number:</strong> {currentBooking?.pitch_number}</h2>
-            <p><strong>Time:</strong> {currentBooking?.formatted_booking_time}</p>
-            <p><strong>Status:</strong> {currentBooking?.booking_status}</p>
-            <p><strong>Total Price:</strong> kshs {currentBooking?.total_price.toFixed(2)}</p>
-          </IonLabel>
-        </IonItem>
+        {currentBooking ? (
+          <>
+            <IonItem>
+              <IonLabel style={{ color: '#97FB57' }}>
+                <h2><strong>Pitch:</strong> {currentBooking.turf.name}</h2>
+                <p><strong>Location:</strong> {currentBooking.turf.location}</p>
+                <p><strong>Date:</strong> {currentBooking.formatted_booking_date}</p>
+                <p><strong>Time:</strong> {currentBooking.formatted_booking_time}</p>
+                <p><strong>Status:</strong> {currentBooking.booking_status}</p>
+                <p><strong>Total Price:</strong> kshs {currentBooking.total_price.toFixed(2)}</p>
+              </IonLabel>
+            </IonItem>
+            <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: animationData,
+                rendererSettings: {
+                  preserveAspectRatio: 'xMidYMid slice',
+                },
+              }}
+              height={150}
+              width={150}
+            />
+          </>
+        ) : (
+          <p style={{ color: '#97FB57' }}>Please make a booking to see the details here.</p>
+        )}
       </IonCardContent>
     </IonCard>
   );

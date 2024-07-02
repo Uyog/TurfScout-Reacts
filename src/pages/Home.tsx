@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonFooter, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonCardContent, IonCardHeader, IonIcon, IonFabButton, IonFab, IonFabList } from '@ionic/react';
-import { add, search, person, settings, time } from 'ionicons/icons';
+import { add, search, person, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import animationData from '../components/Creator.json';
@@ -22,7 +22,6 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
   const [userName, setUserName] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
   const [hasBookedTurf, setHasBookedTurf] = useState<boolean>(false);
-  const [showBookingStatus, setShowBookingStatus] = useState<boolean>(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -119,10 +118,6 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
     }
   };
 
-  const handleIconClick = () => {
-    setShowBookingStatus(!showBookingStatus);
-  };
-
   return (
     <>
       <IonMenu contentId="main-content">
@@ -155,7 +150,7 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <div className={`card-container ${showBookingStatus ? 'flipped' : ''}`} onClick={handleIconClick}>
+          <div className="welcome-card">
             <IonCard color="dark" className="flippable-card" style={{ backgroundColor: '#1c1c1c', borderRadius: '15px'}}>
               <IonCardHeader></IonCardHeader>
               <IonCardContent>
@@ -175,18 +170,12 @@ const HomePage: React.FC<HomePageProps> = ({ authenticated }) => {
                   <span style={{ color: '#97FB57', fontWeight: 'bold', fontSize: 30, marginLeft: 40 }}>
                     Welcome {userName}!
                   </span>
-                  <IonButton className={`icon-button ${hasBookedTurf ? 'flashing-icon' : ''}`} style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
-                    <IonIcon icon={time} style={{ color: '#97FB57' }} />
-                  </IonButton>
                 </div>
               </IonCardContent>
             </IonCard>
-            <IonCard color="dark" className="flippable-card" style={{ backgroundColor: '#1c1c1c', borderRadius: '15px', padding: '20px' }}>
-              <IonCardHeader></IonCardHeader>
-              <IonCardContent>
-                <BookingStatus />
-              </IonCardContent>
-            </IonCard>
+          </div>
+          <div className="booking-status-card">
+            <BookingStatus />
           </div>
           <FabButton history={history} />
         </IonContent>
