@@ -1,0 +1,23 @@
+/* RatingPrompt.css */
+.half-screen-modal .modal-wrapper {
+    height: 50%;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(100%);
+  }
+  
+.half-screen-modal.ion-page-visible .modal-wrapper {
+    transform: translateY(0);
+}
+
+.half-screen-modal .modal-content {
+    padding: 20px;
+}
+
+.half-screen-modal .ion-item {
+    margin-bottom: 20px;
+}
